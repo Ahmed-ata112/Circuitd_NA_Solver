@@ -1,0 +1,412 @@
+﻿
+
+//test 1
+
+isrc i1 1 2 3 0
+res r1 1 0 3
+res r2 2 0 5
+res r3 1 2 4 
+
+
+passed results:
+{V0: 0.0, V1: 3.00000000000000, V2: -5.00000000000000}
+
+//test 2
+
+isrc i1 1 2 2 0
+vsrc v2 1 0 5 0
+res r1 1 0 3
+res r2 2 0 4
+res r3 2 0 5
+-1
+passed results:
+C++:
+      (5,0)
+(-4.44444,0)
+PYRTHON:
+{V0: 0.0
+ V1: 5.00000000000000, 
+V2: -4.44444444444444
+}
+
+
+//test 3
+
+isrc i1 1 2 2 0
+vsrc v2 0 1 5 0
+res r1 1 0 3
+res r2 2 0 4
+res r3 2 0 5
+-1
+
+passed results:
+C++:
+      (-5,0)
+(-4.44444,0)
+
+Python:
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = -5.00000000000000 or in Polar (5.0,180.0)
+V at node 2 = -4.44444444444444 or in Polar (4.444444444444445,180.0)
+
+//test 4
+
+vsrc v2 2 1 3 0
+isrc i1 2 0 2 0
+res r1 1 0 5
+res r2 2 0 6
+res r3 2 1 4
+-1
+
+passed  results
+C++ program:
+(4.09091,0)
+(7.09091,0)
+
+python:
+{V0: 0.0, 
+V1: 4.09090909090909, 
+V2: 7.09090909090909, 
+}
+
+
+//test 5
+vsrc v1 2 3 3 0
+isrc i1 1 0 9 0
+res r1 1 0 4
+res r2 1 2 5
+res r3 2 0 6
+res r4 2 3 8
+res r5 3 0 7
+-1
+passed with results:
+(24.6792,0)
+(10.5283,0)
+ (7.5283,0)
+
+python:
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = 24.6792452830189 or in Polar (24.67924528301887,0.0)
+V at node 2 = 10.5283018867925 or in Polar (10.528301886792454,0.0)
+V at node 3 = 7.52830188679245 or in Polar (7.528301886792453,0.0)
+
+
+////test 6 : same as before but adding a voltage source
+vsrc v1 2 3 3 0
+vsrc v2 3 0 10 0
+isrc i1 1 0 9 0
+res r1 1 0 4
+res r2 1 2 5
+res r3 2 0 6
+res r4 2 3 8
+res r5 3 0 7
+
+
+passed with results:
+(25.7778,0)
+(13,0)
+(10,0)
+
+python:
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = 25.7777777777778 or in Polar (25.77777777777778,0.0)
+V at node 2 = 13.0000000000000 or in Polar (13.0,0.0)
+V at node 3 = 10.0000000000000 or in Polar (10.0,0.0)
+
+
+// test 7: test 4 but with a phase = 30 degrees
+vsrc v2 2 1 3 30
+isrc i1 2 0 2 0
+res r1 1 0 5
+res r2 2 0 6
+res r3 2 1 4
+-1
+
+Solution=
+(4.2736,-0.681818)
+(6.87168,0.818182)
+
+python:
+{
+V0: 0.0, 
+V1: 4.27360172211213 - 0.681818181818182*I,
+ V2: 6.87167793346545 + 0.818181818181818*I, 
+}
+
+//test 8: testing the phase logic
+isrc i1 1 0 5 45
+vsrc v1 2 0 2 30
+res r1 1 2 4
+
+//passed
+Solution=
+(15.8742,15.1421)
+      (1.73205,1)
+python:
+{V0: 0.0, 
+V1: 15.8741864312998 + 15.142135623731*I, 
+V2: 1.73205080756888 + 1.0*I}
+
+
+//test 9
+vsrc v1 2 0 5 0
+vsrc v2 2 1 10 0
+res r1 1 0 2
+res r2 1 2 3
+res r3 2 0 4
+-1
+C++:
+----didn't pass----
+pyhon:
+
+passed with results:
+{V0: 0.0, 
+V1: -5.00000000000000, 
+V2: 5.00000000000000
+}
+
+
+
+//test 10 caps and induc
+
+w 1000
+vsrc v1 1 0 30 30
+ind i1 2 0 .03
+cap c1 2 1 3
+
+passed with reults:
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = 25.9807621135332 + 15.0*I or in Polar (30.000000000000036,29.999999999999964)
+V at node 2 = 25.9810507918753 + 15.0001666685185*I or in Polar (30.000333337037116,29.99999999999996)
+
+
+
+//test 11--->
+w 1
+vsrc v1 1 0 10 -45
+vsrc v2  3 0 5 -60
+res r1 2 1 3
+cap c1 2 0 1
+ind i1 2 3 1
+
+passed with results
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = 7.07106781186548 - 7.07106781186548*I or in Polar (10.000000000000007,-45.0)
+V at node 2 = -5.91931324490109 - 14.5710678118655*I or in Polar (15.72750096071349,-112.10883051074342)
+V at node 3 = 2.5 - 4.33012701892219*I or in Polar (4.999999999999997,-59.999999999999986)
+
+
+
+
+//test 12 ---> no 5 in sh 6
+w 1
+vsrc v1 3 0 12 0
+isrc i1 1 5 4 90
+isrc i2 0 5 2 0
+res r1 5 4 2
+res r2 4 0 2
+res r3 2 4 2
+cap c1 2 3 0.33333333333
+ind l1 1 2 4
+
+solved with results:
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = -5.92 + 10.56*I or in Polar (12.106196760337244,119.2752542772526)
+V at node 2 = 10.08 + 10.56*I or in Polar (14.598630072715727,46.33221985386964)
+V at node 3 = 12.0000000000000 or in Polar (12.0,0.0)
+V at node 4 = 3.04 + 1.28*I or in Polar (3.298484500494128,22.83365417791754)
+V at node 5 = -0.96 - 6.72*I or in Polar (6.788225099390857,-98.130102354156)
+
+
+//test 12
+w 1
+vsrc v1 1 0 60 0
+isrc i1 4 0 5 90
+res r1 1 2 2
+ind l1 2 3 4
+res r1 3 0 6
+res r2 4 5 4
+cap c2 3 4 .5
+cap c1 5 0 .333333
+
+
+passed results:
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = 60.0000000000000 or in Polar (60.0,0.0)
+V at node 2 = 44.062500878908 + 13.124997187498*I or in Polar (45.9757494215766,16.587334885110725)
+V at node 3 = 17.8125065039119 - 18.7500010546859*I or in Polar (25.86209441446357,-46.46879187719852)
+V at node 4 = 24.687503339848 - 8.75000410156458*I or in Polar (26.19227735292224,-19.515879025639688)
+V at node 5 = 4.68750943360533 - 15.0000104296924*I or in Polar (15.715376469592474,-72.6459538778039)
+
+
+
+
+//adding the vcvs 
+//test 13
+vsrc v1 2 3 3 0
+vcvs v2 3 0 2 0 3
+isrc i1 1 0 9 0
+res r1 1 0 4
+res r2 1 2 5
+res r3 2 0 6
+res r4 2 3 8
+res r5 3 0 7
+
+passed results:
+{V0: 0.0, 
+V1: 19.3333333333333, 
+V2: -1.50000000000000,
+ V3: -4.50000000000000
+}
+
+
+
+
+//test 14
+w 1000
+vsrc v1 1 0 10 30
+vcvs v2 6 5 1 2 3
+ind l1 1 2 10
+cap c1 2 3 4
+res r1 4 0 3
+res r2 3 4 3
+res r3 6 3 4
+cap c2 5 4 4
+
+results:
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = 8.66025403784439 + 5.0*I or in Polar (10.000000000000002,29.999999999999993)
+V at node 2 = 4.87180020238262 + 2.81179470882816*I or in Polar (5.625000150802612,29.9917040488412)
+V at node 3 = 4.87180029709397 + 2.81179476353329*I or in Polar (5.625000260177606,29.991704049209904)
+V at node 4 = 0.000656461587351553 - 0.00113653615063853*I or in Polar (0.0013124999951909966,-59.989333776732195)
+V at node 5 = 0.000421955934365339 - 0.000730662202811924*I or in Polar (0.0008437500015787252,-59.99365369659078)
+V at node 6 = 11.3657834623197 + 6.56388521131271*I or in Polar (13.124999915414431,30.00698292313356)
+
+//check the above results
+
+//test 15
+
+isrc i1 1 0 4 0
+isrc i2 3 2 2 0
+ccvs c1 1 2 0 2 r1 2
+res r1 2 0 10
+res r2 1 0 10
+res r3 3 0 10
+res r4 2 3 5
+res r5 1 2 5
+
+
+{V0: 0.0,
+ V1: 13.9534883720930,
+ V2: 11.6279069767442, 
+V3: 14.4186046511628
+}
+
+
+
+// test 16
+w 0.1
+isrc i1 1 0 2 45
+ccvs cc1 2 0 0 1 r1 10
+res r1 0 1 20
+cap c1 0 3 1
+res r2 2 3 10
+ind l1 1 2 100
+
+passed:
+{V0: 0.0, V1: 28.284271247462*I, V2: 14.142135623731*I, V3: 7.0710678118655 + 7.0710678118655*I}
+
+//test 17 
+
+w 0.2
+isrc i1 1 0 10.6 0
+ccvs cc1 4 0 2 1 r1 20
+res r1 1 2 1
+ind l1 2 3 10
+cap c1 0 3 1
+res r2 0 1 10
+res r3 4 3 5
+
+passed:
+{V0: 0.0, V1: 68.4 - 16.8*I, V2: 64.64 - 18.48*I, V3: 68.0 - 26.0*I, V4: 75.2 + 33.6*I}
+
+
+//test 18
+
+w 0.04
+isrc i1 1 0 .01431782 65.2248
+vcvs vc1 2 0 3 0 .1
+cccs ccc1 0 3 2 1 l1 20
+ind l1 1 2 625
+res r1 3 0 50
+res r2 1 0 50
+cap c1 3 0 1
+
+passed :
+{V0: 0.0, 
+V1: -0.199999310922241 + 0.650000159182962*I,
+ V2: -0.199999570239611 + 0.400000177748706*I,
+ V3: -1.99999570239611 + 4.00000177748706*I,
+
+
+ 
+
+//test 19  --> example 2
+w 0
+res r1 1 0 2
+vsrc v1 1 2 20 0
+isrc i1 2 0 10 0
+res r2 2 0 4
+res r3 1 3 2
+res r4 3 0 1
+vcvs v2 2 3 1 3 2
+
+
+results:
+{V0: 0.0, 
+V1: -2.85714285714286, 
+V2: -22.8571428571429,
+ V3: 17.1428571428571, 
+
+
+
+//test 20
+vsrc v1 3 0 5 0
+cccs i1 2 1 2 3 r1 3 
+res r1 2 3 4
+res r2 2 1 3
+res r3 1 0 5
+
+{V0: 0.0, 
+V1: 1.19047619047619, 
+V2: 4.04761904761905,
+ V3: 5.00000000000000,
+
+
+
+//test 21
+
+
+vsrc v1 3 0 5 0
+vccs vc1 2 1 1 0 4 
+res r1 2 3 4
+res r2 2 1 3
+res r3 1 0 5
+
+results:
+{V0: 0.0,
+ V1: 0.347222222222222,
+ V2: 4.72222222222222,
+ V3: 5.00000000000000, 
+
+
+
+
+
+
+
+
+
+
+
+
