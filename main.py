@@ -14,8 +14,8 @@ class node:
     count = 1
 
     def __init__(self, id=0, voltage=complex(0.0, 0.0)):
-        self.id = node.count
-        self.components = []
+        self.id = node.count  #To calculate no of nodes
+        self.components = []  #like array of string in c++ i think
         self.voltage = voltage
         self.sign = []
         node.count += 1
@@ -26,7 +26,7 @@ class node:
 
 
 class Res:
-    def __init__(self, name, res, node1, node2):
+    def __init__(self, name, res, node1, node2):  #string  int(value)  int  int
         self.name = name
         self.resistance = res
         self.first_node = node1
@@ -127,7 +127,7 @@ class Vccs:
         self.coefficient = coeff
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':   #I dont understand this line
     resistances = []
     inductances = []
     capacitances = []
@@ -139,14 +139,14 @@ if __name__ == '__main__':
     Vccss = []
     Cccss = []
     f = open("examples/input.txt")
-    input_str = (f.read()).split()
-
+    input_str = (f.read()).split() ##the split fn returns a list contains strings, when find a white space that means it is new string
+## so input_str is a list of string
     no_nodes = 0
     no_voltage_sources = 0
     name_of_variables = []
 
     # counting the number of nodes and sources
-    for i in range(len(input_str)):
+    for i in range(len(input_str)): # loop of the number of elements inside the list to calculate no of nodes and voltage sources
         s = input_str[i]
         if s == "res" or s == "vsrc" or s == "isrc" or s == "ind" or s == "cap" or s == "vcvs" or s == "ccvs" or s == "vccs" or s == "cccs":
             pos_terminal = int(input_str[i + 2])
@@ -158,10 +158,10 @@ if __name__ == '__main__':
 
     ########################################
     total_no_nodes = no_nodes + 1  # with the ground node
-    nodes = [node() for i in range(total_no_nodes)]
+    nodes = [node() for i in range(total_no_nodes)] # creating a list of objects from class node
 
     V0 = symbols("V0")
-    equations = [V0 for i in range(total_no_nodes)]
+    equations = [V0 for i in range(total_no_nodes)] # I think i take a default value 0 at first # i think this line initialise all equations with V0
 
     nodes_Voltages_sym = list(symbols("V0:%d" % (no_nodes + 1)))  # V1 V2 V3 for 3 nodes in circuit
     current_in_vs_sym = list(symbols("iV1:%d" % (no_voltage_sources + 1)))
@@ -203,7 +203,7 @@ if __name__ == '__main__':
             i += 1
             magnitude = float(input_str[i])
             i += 1
-            phase = float(input_str[i]) * cmath.pi / 180.0
+            phase = float(input_str[i]) * cmath.pi / 180.0  # convert to radian
 
             v = Vsrc(name, magnitude, phase, pos_terminal, neg_terminal)
             nodes[pos_terminal].addComp(v, 1)
@@ -227,6 +227,116 @@ if __name__ == '__main__':
             nodes[neg_terminal].addComp(isr, -1)
 
             Isrcs.append(isr)
+
+        if s == "cap":
+            i += 1
+            name = input_str[i]
+            i += 1
+            pos_terminal = int(input_str[i])
+            i += 1
+            neg_terminal = int(input_str[i])
+            i += 1
+            capacitance = int(input_str[i])
+
+            cap = Cap(name, capacitance, pos_terminal, neg_terminal)
+            nodes[pos_terminal].addComp(cap, 1)
+            nodes[neg_terminal].addComp(cap, -1)
+            capacitances.append(cap)
+
+        if s == "ind":
+            i += 1
+            name = input_str[i]
+            i += 1
+            pos_terminal = int(input_str[i])
+            i += 1
+            neg_terminal = int(input_str[i])
+            i += 1
+            inductance = int(input_str[i])
+
+            ind = Ind(name, inductance, pos_terminal, neg_terminal)
+            nodes[pos_terminal].addComp(ind, 1)
+            nodes[neg_terminal].addComp(ind, -1)
+            inductances.append(ind)
+
+        if s == "cccs":
+            i += 1
+            name = input_str[i]
+            i += 1
+            pos_terminal = int(input_str[i])
+            i += 1
+            neg_terminal = int(input_str[i])
+            i += 1
+            control_neg = int(input_str[i])
+            i += 1
+            control_pos = int(input_str[i])
+            i += 1
+            passing_comp = input_str[i]
+            i += 1
+            coeff = int(input_str[i])
+
+            cccs = Cccs(name, coeff,  passing_comp, pos_terminal,  neg_terminal, control_pos, control_neg)
+            nodes[pos_terminal].addComp(cccs, 1)
+            nodes[neg_terminal].addComp(cccs, -1)
+            Cccss.append(cccs)
+
+        if s == "ccvs":
+            i += 1
+            name = input_str[i]
+            i += 1
+            pos_terminal = int(input_str[i])
+            i += 1
+            neg_terminal = int(input_str[i])
+            i += 1
+            control_neg = int(input_str[i])
+            i += 1
+            control_pos = int(input_str[i])
+            i += 1
+            passing_comp = input_str[i]
+            i += 1
+            coeff = int(input_str[i])
+
+            ccvs = (name, coeff, passing_comp, pos_terminal, neg_terminal, control_pos, control_neg)
+            nodes[pos_terminal].addComp(ccvs, 1)
+            nodes[neg_terminal].addComp(ccvs, -1)
+            Ccvss.append(ccvs)
+
+        if s == "vcvs":
+            i += 1
+            name = input_str[i]
+            i += 1
+            pos_terminal = int(input_str[i])
+            i += 1
+            neg_terminal = int(input_str[i])
+            i += 1
+            control_pos = int(input_str[i])
+            i += 1
+            control_neg = int(input_str[i])
+            i += 1
+            coeff = int(input_str[i])
+
+            vcvs = (name, coeff, pos_terminal, neg_terminal, control_pos, control_neg)
+            nodes[pos_terminal].addComp(vcvs, 1)
+            nodes[neg_terminal].addComp(vcvs, -1)
+            Vcvss.append(vcvs)
+
+        if s == "vccs":
+            i += 1
+            name = input_str[i]
+            i += 1
+            pos_terminal = int(input_str[i])
+            i += 1
+            neg_terminal = int(input_str[i])
+            i += 1
+            control_pos = int(input_str[i])
+            i += 1
+            control_neg = int(input_str[i])
+            i += 1
+            coeff = int(input_str[i])
+
+            vccs = (name, coeff, pos_terminal, neg_terminal, control_pos, control_neg)
+            nodes[pos_terminal].addComp(vccs, 1)
+            nodes[neg_terminal].addComp(vccs, -1)
+            Vccss.append(vccs)
 
         i += 1
 
