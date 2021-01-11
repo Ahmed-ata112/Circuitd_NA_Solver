@@ -259,6 +259,27 @@ if __name__ == '__main__':
         if vs.neg_terminal != 0:
             equations[vs.neg_terminal] -= current_in_vs_sym[vs.id]
 
+    for cccs in Cccss:
+        V_p_node = nodes_Voltages_sym[cccs.pos_terminal]
+        V_n_node = nodes_Voltages_sym[cccs.neg_terminal]
+        V_control_p = nodes_Voltages_sym[cccs.control_pos]
+        V_control_n = nodes_Voltages_sym[cccs.control_neg]
+        if cccs.pos_terminal != 0:
+            equations[cccs.pos_terminal] -= i
+        if cccs.neg_terminal != 0:
+            equations[cccs.neg_terminal] += i
+        
+        passing_component
+
+    for vccs in Vccss:
+        V_p_node = nodes_Voltages_sym[vccs.pos_terminal]
+        V_n_node = nodes_Voltages_sym[vccs.neg_terminal]
+        pos_terminal
+        neg_terminal
+        control_pos
+        control_neg
+        coefficient
+        passing_component
     unknowns = []
     for s in nodes_Voltages_sym:
         unknowns.append(s)
