@@ -268,7 +268,7 @@ if __name__ == '__main__':
             equations[cccs.pos_terminal] -= i
         if cccs.neg_terminal != 0:
             equations[cccs.neg_terminal] += i
-        
+
         passing_component
 
     for vccs in Vccss:
