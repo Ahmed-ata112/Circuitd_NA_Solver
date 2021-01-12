@@ -159,7 +159,6 @@ if __name__ == '__main__':   #I dont understand this line
     ########################################
     total_no_nodes = no_nodes + 1  # with the ground node
     nodes = [node() for i in range(total_no_nodes)] # creating a list of objects from class node
-
     V0 = symbols("V0")
     equations = [V0 for i in range(total_no_nodes)]  # i think this line initialise all equations with equation (V0 = 0)
 
@@ -273,7 +272,7 @@ if __name__ == '__main__':   #I dont understand this line
             i += 1
             passing_comp = input_str[i]
             i += 1
-            coeff = int(input_str[i])
+            coeff = float(input_str[i])
 
             cccs = Cccs(name, coeff,  passing_comp, pos_terminal,  neg_terminal, control_pos, control_neg)
             nodes[pos_terminal].addComp(cccs, 1)
@@ -294,7 +293,7 @@ if __name__ == '__main__':   #I dont understand this line
             i += 1
             passing_comp = input_str[i]
             i += 1
-            coeff = int(input_str[i])
+            coeff = float(input_str[i])
 
             ccvs = Ccvs(name, coeff, passing_comp, pos_terminal, neg_terminal, control_pos, control_neg)
             nodes[pos_terminal].addComp(ccvs, 1)
@@ -313,7 +312,7 @@ if __name__ == '__main__':   #I dont understand this line
             i += 1
             control_neg = int(input_str[i])
             i += 1
-            coeff = int(input_str[i])
+            coeff = float(input_str[i])
 
             vcvs = Vcvs(name, coeff, pos_terminal, neg_terminal, control_pos, control_neg)
             nodes[pos_terminal].addComp(vcvs, 1)
@@ -332,7 +331,7 @@ if __name__ == '__main__':   #I dont understand this line
             i += 1
             control_neg = int(input_str[i])
             i += 1
-            coeff = int(input_str[i])
+            coeff = float(input_str[i])
 
             vccs = Vccs(name, coeff, pos_terminal, neg_terminal, control_pos, control_neg)
             nodes[pos_terminal].addComp(vccs, 1)
@@ -350,6 +349,9 @@ if __name__ == '__main__':   #I dont understand this line
             equations[r.first_node] += (V_first_node - V_sec_node) * r.admittance
         if r.second_node != 0:
             equations[r.second_node] += (V_sec_node - V_first_node) * r.admittance
+
+
+
     for c in capacitances:
         V_first_node = nodes_Voltages_sym[c.first_node]  # V1
         V_sec_node = nodes_Voltages_sym[c.second_node]  # V2
@@ -357,6 +359,9 @@ if __name__ == '__main__':   #I dont understand this line
             equations[c.first_node] += (V_first_node - V_sec_node) * c.admittance
         if c.second_node != 0:
             equations[c.second_node] += (V_sec_node - V_first_node) * c.admittance
+
+
+
     for l in inductances:
         V_first_node = nodes_Voltages_sym[l.first_node]  # V1
         V_sec_node = nodes_Voltages_sym[l.second_node]  # V2
@@ -364,6 +369,9 @@ if __name__ == '__main__':   #I dont understand this line
             equations[l.first_node] += (V_first_node - V_sec_node) * l.admittance
         if l.second_node != 0:
             equations[l.second_node] += (V_sec_node - V_first_node) * l.admittance
+
+
+            
 
     # filling the data of the I_src
     for cs in Isrcs:
@@ -384,6 +392,8 @@ if __name__ == '__main__':   #I dont understand this line
         if vs.neg_terminal != 0:
             equations[vs.neg_terminal] -= current_in_vs_sym[vs.id]
 
+
+
     for vccs in Vccss:
         V_p_node = nodes_Voltages_sym[vccs.pos_terminal]
         V_n_node = nodes_Voltages_sym[vccs.neg_terminal]
@@ -394,6 +404,9 @@ if __name__ == '__main__':   #I dont understand this line
             equations[vccs.pos_terminal] -= (V_control_p - V_control_n) * vccs.coefficient
         if vccs.neg_terminal != 0:
             equations[vccs.neg_terminal] += (V_control_p - V_control_n) * vccs.coefficient
+
+
+
     for cccs in Cccss:
         V_p_node = nodes_Voltages_sym[cccs.pos_terminal]
         V_n_node = nodes_Voltages_sym[cccs.neg_terminal]
@@ -403,10 +416,50 @@ if __name__ == '__main__':   #I dont understand this line
         for cmp in nodes[cccs.control_pos].components:
             if cccs.passing_component == cmp.name:
                 i = cccs.coefficient * cmp.admittance
+
+
         if cccs.pos_terminal != 0:
             equations[cccs.pos_terminal] -= (V_control_p - V_control_n) * i
         if cccs.neg_terminal != 0:
             equations[cccs.neg_terminal] += (V_control_p - V_control_n) * i
+
+    for vcvs in Vcvss:
+        V_p_node = nodes_Voltages_sym[vcvs.pos_terminal]
+        V_n_node = nodes_Voltages_sym[vcvs.neg_terminal]
+        V_control_p = nodes_Voltages_sym[vcvs.control_pos]
+        V_control_n = nodes_Voltages_sym[vcvs.control_neg]
+
+        vx = (V_control_p - V_control_n) * vcvs.coefficient
+
+        equations.append(V_p_node - V_n_node - vx)
+
+        if vcvs.pos_terminal != 0:
+            equations[vcvs.pos_terminal] += current_in_vs_sym[vcvs.id]
+        if vcvs.neg_terminal != 0:
+            equations[vcvs.neg_terminal] -= current_in_vs_sym[vcvs.id]
+
+
+    for ccvs in Ccvss:
+        V_p_node = nodes_Voltages_sym[ccvs.pos_terminal]
+        V_n_node = nodes_Voltages_sym[ccvs.neg_terminal]
+        V_control_p = nodes_Voltages_sym[ccvs.control_pos]
+        V_control_n = nodes_Voltages_sym[ccvs.control_neg]
+
+        ix = 0
+        for cmp in nodes[ccvs.control_pos].components:
+            if ccvs.passing_component == cmp.name:
+                ix = (V_control_p - V_control_n)* ccvs.coefficient * cmp.admittance
+
+        
+
+        equations.append(V_p_node - V_n_node - ix)
+
+        if ccvs.pos_terminal != 0:
+            equations[ccvs.pos_terminal] += current_in_vs_sym[ccvs.id]
+        if ccvs.neg_terminal != 0:
+            equations[ccvs.neg_terminal] -= current_in_vs_sym[ccvs.id]
+
+
 
     unknowns = []
     for s in nodes_Voltages_sym:
@@ -429,8 +482,5 @@ if __name__ == '__main__':   #I dont understand this line
 
     f.close()
 
-    # A, B = linear_eq_to_matrix(equations, unknowns)
-    # print(A,B)
-    # print((A ** -1)*B)
 
-    # solve_linear_system_LU(equations,unknowns)
+    
