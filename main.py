@@ -236,7 +236,7 @@ if __name__ == '__main__':   #I dont understand this line
             i += 1
             neg_terminal = int(input_str[i])
             i += 1
-            capacitance = int(input_str[i])
+            capacitance = float(input_str[i])
 
             cap = Cap(name, capacitance, pos_terminal, neg_terminal)
             nodes[pos_terminal].addComp(cap, 1)
@@ -251,7 +251,7 @@ if __name__ == '__main__':   #I dont understand this line
             i += 1
             neg_terminal = int(input_str[i])
             i += 1
-            inductance = int(input_str[i])
+            inductance = float(input_str[i])
 
             ind = Ind(name, inductance, pos_terminal, neg_terminal)
             nodes[pos_terminal].addComp(ind, 1)
@@ -295,7 +295,7 @@ if __name__ == '__main__':   #I dont understand this line
             i += 1
             coeff = int(input_str[i])
 
-            ccvs = (name, coeff, passing_comp, pos_terminal, neg_terminal, control_pos, control_neg)
+            ccvs = Ccvs(name, coeff, passing_comp, pos_terminal, neg_terminal, control_pos, control_neg)
             nodes[pos_terminal].addComp(ccvs, 1)
             nodes[neg_terminal].addComp(ccvs, -1)
             Ccvss.append(ccvs)
@@ -314,7 +314,7 @@ if __name__ == '__main__':   #I dont understand this line
             i += 1
             coeff = int(input_str[i])
 
-            vcvs = (name, coeff, pos_terminal, neg_terminal, control_pos, control_neg)
+            vcvs = Vcvs(name, coeff, pos_terminal, neg_terminal, control_pos, control_neg)
             nodes[pos_terminal].addComp(vcvs, 1)
             nodes[neg_terminal].addComp(vcvs, -1)
             Vcvss.append(vcvs)
@@ -333,7 +333,7 @@ if __name__ == '__main__':   #I dont understand this line
             i += 1
             coeff = int(input_str[i])
 
-            vccs = (name, coeff, pos_terminal, neg_terminal, control_pos, control_neg)
+            vccs = Vccs(name, coeff, pos_terminal, neg_terminal, control_pos, control_neg)
             nodes[pos_terminal].addComp(vccs, 1)
             nodes[neg_terminal].addComp(vccs, -1)
             Vccss.append(vccs)
@@ -349,6 +349,20 @@ if __name__ == '__main__':   #I dont understand this line
             equations[r.first_node] += (V_first_node - V_sec_node) * r.admittance
         if r.second_node != 0:
             equations[r.second_node] += (V_sec_node - V_first_node) * r.admittance
+    for c in capacitances:
+        V_first_node = nodes_Voltages_sym[c.first_node]  # V1
+        V_sec_node = nodes_Voltages_sym[c.second_node]  # V2
+        if c.first_node != 0:
+            equations[c.first_node] += (V_first_node - V_sec_node) * c.admittance
+        if c.second_node != 0:
+            equations[c.second_node] += (V_sec_node - V_first_node) * c.admittance
+    for l in inductances:
+        V_first_node = nodes_Voltages_sym[l.first_node]  # V1
+        V_sec_node = nodes_Voltages_sym[l.second_node]  # V2
+        if l.first_node != 0:
+            equations[l.first_node] += (V_first_node - V_sec_node) * l.admittance
+        if l.second_node != 0:
+            equations[l.second_node] += (V_sec_node - V_first_node) * l.admittance
 
     # filling the data of the I_src
     for cs in Isrcs:
@@ -369,6 +383,30 @@ if __name__ == '__main__':   #I dont understand this line
         if vs.neg_terminal != 0:
             equations[vs.neg_terminal] -= current_in_vs_sym[vs.id]
 
+    for vccs in Vccss:
+        V_p_node = nodes_Voltages_sym[vccs.pos_terminal]
+        V_n_node = nodes_Voltages_sym[vccs.neg_terminal]
+        V_control_p = nodes_Voltages_sym[vccs.control_pos]
+        V_control_n = nodes_Voltages_sym[vccs.control_neg]
+
+        if vccs.pos_terminal != 0:
+            equations[vccs.pos_terminal] -= (V_control_p - V_control_n) * vccs.coefficient
+        if vccs.neg_terminal != 0:
+            equations[vccs.neg_terminal] += (V_control_p - V_control_n) * vccs.coefficient
+    """ for cccs in Cccss:
+        V_p_node = nodes_Voltages_sym[cccs.pos_terminal]
+        V_n_node = nodes_Voltages_sym[cccs.neg_terminal]
+        V_control_p = nodes_Voltages_sym[cccs.control_pos]
+        V_control_n = nodes_Voltages_sym[cccs.control_neg]
+        i = 0
+        for r in resistances:
+            if cccs.passing_component == r.name:
+                i = cccs.coefficient / r.admittance
+        if cccs.pos_terminal != 0:
+            equations[cccs.pos_terminal] -= (V_control_p - V_control_n) * i
+        if cccs.neg_terminal != 0:
+            equations[cccs.neg_terminal] += (V_control_p - V_control_n) * i
+    """
     unknowns = []
     for s in nodes_Voltages_sym:
         unknowns.append(s)
