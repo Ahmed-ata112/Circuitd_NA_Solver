@@ -401,8 +401,25 @@ results:
 
 
 
+//test 22
+w 10
+vsrc v1 1 0 18 0
+res r1 1 2 30
+ind l1 2 3 2
+cap c1 3 0 .005
+res r2 3 0 15
+ind l2 3 4 4
+cap c2 4 5 .002
+res r3 5 0 30
+ind l3 5 0 3
 
 
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = 18.0000000000000 or in Polar (18.0,0.0)
+V at node 2 = 6.348 + 5.668*I or in Polar (8.51,41.763)
+V at node 3 = 2.569 - 2.1*I or in Polar (3.318,-39.265)
+V at node 4 = -4.526 - 6.586*I or in Polar (7.991,-124.501)
+V at node 5 = 4.343 - 0.979*I or in Polar (4.452,-12.7)
 
 
 
