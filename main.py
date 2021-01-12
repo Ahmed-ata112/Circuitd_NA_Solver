@@ -161,11 +161,12 @@ if __name__ == '__main__':   #I dont understand this line
     nodes = [node() for i in range(total_no_nodes)] # creating a list of objects from class node
 
     V0 = symbols("V0")
-    equations = [V0 for i in range(total_no_nodes)] # I think i take a default value 0 at first # i think this line initialise all equations with V0
+    equations = [V0 for i in range(total_no_nodes)]  # i think this line initialise all equations with equation (V0 = 0)
 
-    nodes_Voltages_sym = list(symbols("V0:%d" % (no_nodes + 1)))  # V1 V2 V3 for 3 nodes in circuit
-    current_in_vs_sym = list(symbols("iV1:%d" % (no_voltage_sources + 1)))
-    # equations[0] = Eq(V0, 0)
+    nodes_Voltages_sym = list(symbols("V0:%d" % (no_nodes + 1)))  # e.g. V1 V2 V3 for 3 nodes in circuit
+    current_in_vs_sym = list(symbols("iV1:%d" % (no_voltage_sources + 1))) # e.g. iV1 iV2 for 2 voltage sources in a circuit
+
+
     # filling the data of the component
     i = 0
     while i < len(input_str):
