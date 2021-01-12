@@ -1,8 +1,8 @@
-vsrc v1 2 3 3 0
-vsrc v2 3 0 10 0
-isrc i1 1 0 9 0
-res r1 1 0 4
-res r2 1 2 5
-res r3 2 0 6
-res r4 2 3 8
-res r5 3 0 7
+w 1000
+vsrc v1 1 0 10 30
+res r1 1 2 20
+res r2 2 0 20
+cap c1 2 3 0.00005
+cccs i1 0 3 0 2 r2 4
+ind l1 3 4 0.01
+res r3 4 0 30
