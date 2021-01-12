@@ -393,20 +393,20 @@ if __name__ == '__main__':   #I dont understand this line
             equations[vccs.pos_terminal] -= (V_control_p - V_control_n) * vccs.coefficient
         if vccs.neg_terminal != 0:
             equations[vccs.neg_terminal] += (V_control_p - V_control_n) * vccs.coefficient
-    """ for cccs in Cccss:
+    for cccs in Cccss:
         V_p_node = nodes_Voltages_sym[cccs.pos_terminal]
         V_n_node = nodes_Voltages_sym[cccs.neg_terminal]
         V_control_p = nodes_Voltages_sym[cccs.control_pos]
         V_control_n = nodes_Voltages_sym[cccs.control_neg]
         i = 0
-        for r in resistances:
-            if cccs.passing_component == r.name:
-                i = cccs.coefficient / r.admittance
+        for cmp in nodes[cccs.control_pos].components:
+            if cccs.passing_component == cmp.name:
+                i = cccs.coefficient * cmp.admittance
         if cccs.pos_terminal != 0:
             equations[cccs.pos_terminal] -= (V_control_p - V_control_n) * i
         if cccs.neg_terminal != 0:
             equations[cccs.neg_terminal] += (V_control_p - V_control_n) * i
-    """
+
     unknowns = []
     for s in nodes_Voltages_sym:
         unknowns.append(s)
