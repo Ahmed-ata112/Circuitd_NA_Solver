@@ -423,6 +423,33 @@ V at node 5 = 4.343 - 0.979*I or in Polar (4.452,-12.7)
 
 
 
+//test 23
+isrc i1 3 0 6
+vccs vc1 1 3 2 0 .25
+res r1 1 2 2
+res r2 2 0 4
+res r3 1 0 4
+res r4 3 2 4
+
+
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = 12.0000000000000 or in Polar (12.0,0.0)
+V at node 2 = 12.0000000000000 or in Polar (12.0,0.0)
+V at node 3 = 24.0000000000000 or in Polar (24.0,0.0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
