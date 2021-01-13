@@ -331,7 +331,13 @@ res r2 0 1 10
 res r3 4 3 5
 
 passed:
-{V0: 0.0, V1: 68.4 - 16.8*I, V2: 64.64 - 18.48*I, V3: 68.0 - 26.0*I, V4: 75.2 + 33.6*I}
+{
+      V0: 0.0, 
+V1: 68.4 - 16.8*I,
+ V2: 64.64 - 18.48*I, 
+ V3: 68.0 - 26.0*I,
+  V4: 75.2 + 33.6*I
+  }
 
 
 //test 18
@@ -439,11 +445,22 @@ V at node 3 = 24.0000000000000 or in Polar (24.0,0.0)
 
 
 
+//test 24
+vsrc v1 1 0 12 0
+isrc i1 3 1 2 0
+vccs vs1 2 0 3 2 0.5
+res r1 2 1 4
+res r2 3 2 5
+res r3 3 0 2
+res r3 3 4 4
+vsrc v2 4 0 20 0 
 
 
-
-
-
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = 12.0000000000000 or in Polar (12.0,0.0)
+V at node 2 = 10.164 or in Polar (10.164,0.0)
+V at node 3 = 9.508 or in Polar (9.508,0.0)
+V at node 4 = 20.0000000000000 or in Polar (20.0,0.0)
 
 
 
