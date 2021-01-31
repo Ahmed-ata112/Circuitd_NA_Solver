@@ -1,8 +1,10 @@
-vsrc v1 1 0 12 0
-isrc i1 3 1 2 0
-vccs vs1 2 0 3 2 0.5
-res r1 2 1 4
-res r2 3 2 5
-res r3 3 0 2
-res r3 3 4 4
-vsrc v2 4 0 20 0 
+w 10
+vsrc v1 1 0 18 0
+res r1 1 2 30
+ind l1 2 3 2
+cap c1 3 0 .005
+res r2 3 0 15
+ind l2 3 4 4
+cap c2 4 5 .002
+res r3 5 0 30
+ind l3 5 0 3

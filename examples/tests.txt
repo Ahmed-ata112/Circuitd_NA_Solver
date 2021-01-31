@@ -463,10 +463,75 @@ V at node 3 = 9.508 or in Polar (9.508,0.0)
 V at node 4 = 20.0000000000000 or in Polar (20.0,0.0)
 
 
+//test 25
+
+w 0
+vsrc v1 1 0 80 0
+vsrc v2 4 3 96 0
+cccs cc1 4 0 3 2 r3 2
+vcvs vc1 5 0 4 0 4
+res r1 1 2 10
+res r2 2 5 20
+res r3 2 3 40
+res r4 4 0 80
+
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = 80.0000000000000 or in Polar (80.0,0.0)
+V at node 2 = -1350.400 or in Polar (1350.4,180.0)   
+V at node 3 = -1171.200 or in Polar (1171.2,180.0)
+V at node 4 = -1075.200 or in Polar (1075.2,180.0)
+V at node 5 = -4300.800 or in Polar (4300.8,180.0)
+
+//test 26
+
+w 1000
+vsrc v1 1 0 150 0
+res r1 1 2 1
+ind l1 2 3 .002
+cap c1 3 6 .0000625
+res r2 6 0 12
+res r3 3 4 1
+ind l2 4 5 .003
+ccvs v2 5 0 6 3 c1 39
+
+
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = 150.000000000000 or in Polar (150.0,0.0)
+V at node 2 = 176.0 + 52.0*I or in Polar (183.521,16.46)
+V at node 3 = 72.0 + 104.0*I or in Polar (126.491,55.305)
+V at node 4 = 96.0 + 162.0*I or in Polar (188.308,59.349)
+V at node 5 = -78.0 + 234.0*I or in Polar (246.658,108.435)
+V at node 6 = -24.0 + 72.0*I or in Polar (75.895,108.435)
 
 
 
+//------test 27--------
+w 1000
+vsrc v1 1 0 250 0
+res r1 1 2 10
+ind l1 2 3 .01
+vccs i1 3 0 4 0 .03
+res r2 3 4 50
+cap c1 4 0 .00001
 
 
+V at node 0 = 0.0 or in Polar (0.0,0.0)
+V at node 1 = 250.000000000000 or in Polar (250.0,0.0)
+V at node 2 = 350.0 - 300.0*I or in Polar (460.977,-40.601)
+V at node 3 = 500.0 - 250.0*I or in Polar (559.017,-26.565)
+V at node 4 = 300.0 - 400.0*I or in Polar (500.0,-53.13)
+
+
+
+----------///test----28///---------
+w 1000
+vsrc v1 1 0 100
+res r1 1 2 1000
+vcvs vc1 2 0 3 0 4
+cap c1 2 3 .000004
+res r2 3 4 50
+ccvs cc1 0 4 2 1 r1 50
+res r3 3 5 40
+cap c2 5 0 .00003333
 
 
